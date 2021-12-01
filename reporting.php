@@ -205,7 +205,7 @@ if(isset($_POST['add'])){
     $response = httpPost("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/emergencyformpost",array("reportno"=>$reportno,"reportername"=>$name,"reporter_number"=>$number,"user_url"=>$actual_link,"reference_id"=>$reference_id));
 	$response = json_decode($response, TRUE);
 	if($response == "success"){
-        echo '<script>alert("Report sent!");</script>';
+        echo '<script>alert("Report sent! Please wait until the call gets connected.");</script>';
     }elseif($response == "wrong"){
         echo '<script>alert("Something went wrong");</script>';
     }
