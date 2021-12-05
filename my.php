@@ -198,57 +198,17 @@ if(isset($_POST['add'])){
     $id = $_GET['id'];
     $name=$_POST["name"];
     $number=$_POST["number"];
-	// $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-	$actual_link = "http://report.okwale.com/312d52700092";
-	$connect = httpGet("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/qrget?user_url=$actual_link");
-	$connect = json_decode($connect, TRUE);
-	$emer = $emergency = '';
-	foreach($connect as $c1){
-		// print_r($c1) ;
-		if(empty($c1)){
-			echo "Not";
-		}else{
-			
-			$emergency .= '"'.$c1['em_numb'].'",';
-			$emname = $c1['em_name'];
-			$emnum = $c1['em_numb'];
-			$emer .= '{"name":"'.$emname.'","number":"'.$emnum.'"}';
-			// echo '[{"name":"'.$emlist.'","number":"'.$emergency.'"}]';
-		}
-		
-	}
-	$emergencynumber = '['.$emergency.']';
-	$emergencydetails = '['.$emer.']';
-	// echo $emergencynumber;echo $emergencydetails;
-	// echo '[{"name":"'.$emlist.'","number":"'.$emergency.'"}]';
-	$ref = httpGet("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/removeEvent?ref=$number");
-	$ref = json_decode($ref, TRUE);
-	foreach($ref as $r1){
-		// print_r($r1) ;
-	}
+	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	// $actual_link = "http://okwale.com/93ce08e07263";
 	$reference_id = httpGet("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/urlidget?url=$actual_link");
 	$reference_id = json_decode($reference_id, TRUE);
-	$reportingname = $reference_id;
-	$postEm = httpPost("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/setEvent",array("numbers"=>$emergencynumber,"numbMap"=>$emergencydetails,"reportingname"=>$reportingname,"name"=>$name,"refid"=>$number));
-	$postEm = json_decode($postEm, TRUE);
-	if($postEm){
-		echo '<script>alert("Report sent! Please wait until the call gets connected.");</script>';
-	}
-	$callnow = httpGet("https://www.kookoo.in/outbound/outbound.php?phone_no=$number&api_key=KK61b84dd1689af190886c8988dc8d1ca9&url=https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/calltesting&caller_id=912250647347&callback_url=https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/callTest");
-	$callnow = json_decode($callnow, TRUE);
-	echo '<script>alert('.$callnow.');</script>';
-	
-	if($callnow){
-		echo '<script>alert("Thank you for using our services");</script>';
-	}
-	
-    // $response = httpPost("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/emergencyformpost",array("reportno"=>$reportno,"reportername"=>$name,"reporter_number"=>$number,"user_url"=>$actual_link,"reference_id"=>$reference_id));
-	// $response = json_decode($response, TRUE);
-	// if($response == "success"){
-    //     echo '<script>alert("Report sent! Please wait until the call gets connected.");</script>';
-    // }elseif($response == "wrong"){
-    //     echo '<script>alert("Something went wrong");</script>';
-    // }
+    $response = httpPost("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/emergencyformpost",array("reportno"=>$reportno,"reportername"=>$name,"reporter_number"=>$number,"user_url"=>$actual_link,"reference_id"=>$reference_id));
+	$response = json_decode($response, TRUE);
+	if($response == "success"){
+        echo '<script>alert("Report sent! Please wait until the call gets connected.");</script>';
+    }elseif($response == "wrong"){
+        echo '<script>alert("Something went wrong");</script>';
+    }
 }
 
 function httpPost($url, $data){
