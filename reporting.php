@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +26,13 @@
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Phone Number</label>
-					<input name="number" type="number" class="input">
+					<input name="number" type="number" id="number" class="input">
+					<button onclick="return sendOTP()" id="verified" type="button" class="button">Send OTP</button>
+				</div>
+				<div class="group" id="numberVerify">
+					<label for="pass" class="label">OTP</label>
+					<input name="number" type="number" id="otp" class="input">
+					<button onclick="return checkOTP()" type="button" class="button" required>Confirm OTP</button>
 				</div>
 				<div class="group">
 					<button type="submit" class="button" name="add">Submit</button>
@@ -191,24 +200,113 @@ a{color:inherit;text-decoration:none}
 	text-align:center;
 }
 </style>
+<script>
+	var ses = null;
+	function sendOTP() {
+		var number = document.getElementById('number').value;
+		var url = "https://2factor.in/API/V1/fda7bc0b-20f9-11e7-929b-00163ef91450/SMS/+91" + number + "/AUTOGEN/otp_new";
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", url);
+
+		xhr.setRequestHeader("Accept", "application/json");
+
+		xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4) {
+			console.log(xhr.status);
+			// console.log((xhr.responseText));
+			result = JSON.parse(xhr.responseText);
+			
+			ses = result.Details;
+
+		}};
+
+		xhr.send();
+
+	}
+	
+	function checkOTP() {
+		console.log(ses)
+		var otp = document.getElementById('otp').value;
+		var url = "https://2factor.in/API/V1/fda7bc0b-20f9-11e7-929b-00163ef91450/SMS/VERIFY/" + ses + "/" + otp;
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", url);
+
+		xhr.setRequestHeader("Accept", "application/json");
+
+		xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4) {
+			console.log(xhr.status);
+			console.log((xhr.responseText));
+			if(xhr.status == 200){
+				document.getElementById('numberVerify').innerHTML = "OTP Verified";
+				document.getElementById("verified").style.display = "none"; 
+			}
+		}};
+
+		xhr.send();
+	}
+</script>
 <?php 
 $id = $_GET['id'];
 if(isset($_POST['add'])){
 	$reportno = "REPORT".rand(00000,999999);
     $id = $_GET['id'];
     $name=$_POST["name"];
-    $number=$_POST["number"];
-	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-	// $actual_link = "http://okwale.com/93ce08e07263";
+	$number=$_POST["number"];
+	$_SESSION['number'] = $number;
+	// $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	$actual_link = "https://report.okwale.com/d8c452200092";
+	$connect = httpGet("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/qrget?user_url=$actual_link");
+	$connect = json_decode($connect, TRUE);
+	print_r($connect);
+	$emer = $emergency = '';
+	$x = 1;
+	foreach($connect as $c1){
+		// print_r($c1) ;
+		if(empty($c1)){
+			echo "Not";
+		}else{
+			// print_r($connect[0]); 
+			if($x === 1){
+				$emergency .= '"'.$c1['em_numb'].'"';
+				$emname = $c1['em_name'];
+				$emnum = $c1['em_numb'];
+				$emer .= '{"name":"'.$emname.'","number":"'.$emnum.'"}';
+			}else{
+				$emergency .= ',"'.$c1['em_numb'].'"';
+				$emname = $c1['em_name'];
+				$emnum = $c1['em_numb'];
+				$emer .= ',{"name":"'.$emname.'","number":"'.$emnum.'"}';
+			}
+			$x++;
+		}
+		
+	}
+	$emergencynumber = '['.$emergency.']';
+	$emergencydetails = '['.$emer.']';
+	// echo $emergencynumber;echo $emergencydetails;
+	// echo '[{"name":"'.$emlist.'","number":"'.$emergency.'"}]';
+	$ref = httpGet("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/removeEvent?ref=$number");
+	$ref = json_decode($ref, TRUE);
+	foreach($ref as $r1){
+		// print_r($r1) ;
+	}
 	$reference_id = httpGet("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/urlidget?url=$actual_link");
 	$reference_id = json_decode($reference_id, TRUE);
-    $response = httpPost("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/emergencyformpost",array("reportno"=>$reportno,"reportername"=>$name,"reporter_number"=>$number,"user_url"=>$actual_link,"reference_id"=>$reference_id));
-	$response = json_decode($response, TRUE);
-	if($response == "success"){
-        echo '<script>alert("Report sent! Please wait until the call gets connected.");</script>';
-    }elseif($response == "wrong"){
-        echo '<script>alert("Something went wrong");</script>';
-    }
+	$reportingname = $reference_id;
+	$postEm = httpPost("https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/setEvent",array("numbers"=>$emergencynumber,"numbMap"=>$emergencydetails,"reportingname"=>$reportingname,"name"=>$name,"refid"=>$number));
+	$postEm = json_decode($postEm, TRUE);
+	if($postEm){
+		echo '<script>alert("Report sent! Please wait until the call gets connected.");</script>';
+	}
+	$callnow = httpGet("https://www.kookoo.in/outbound/outbound.php?phone_no=$number&api_key=KK61b84dd1689af190886c8988dc8d1ca9&url=https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/calltesting&caller_id=912250647347&callback_url=https://us-east-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-aqwyr/service/okapp-users/incoming_webhook/callTest");
+	$callnow = json_decode($callnow, TRUE);
+	echo '<script>document.location="confirm.php"</script>';
+	if($callnow){
+		echo '<script>alert("Thank you for using our services");</script>';
+	}
 }
 
 function httpPost($url, $data){
