@@ -11,40 +11,30 @@ session_start();
 <meta content="Web IT services" name="author" />
 <!-- App favicon -->
 <link rel="shortcut icon" href="https://admin.okwale.com/assets/images/ok.jpeg">
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="login-wrap">
-	<div class="login-html">
-		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">OK Wale</label>
-		<form class="login-form" method="POST">
-			<div class="sign-in-htm">
-				<div class="group">
-					<label for="user" class="label">Your Name</label>
-					<input name="name" type="text" class="input">
-				</div>
-				<div class="group">
-					<label for="pass" class="label">Phone Number</label>
-					<input name="number" type="number" id="number" class="input">
-					<button onclick="return sendOTP()" id="verified" type="button" class="button">Send OTP</button>
-				</div>
-				<div class="group" id="numberVerify">
-					<label for="pass" class="label">OTP</label>
-					<input name="number" type="number" id="otp" class="input">
-					<button onclick="return checkOTP()" type="button" class="button" required>Confirm OTP</button>
-				</div>
-				<div class="group">
-					<button type="submit" class="button" name="add">Submit</button>
-				</div>
-			</div>
-			<div class="sign-up-htm">
-				<p>OK wale provide emergency help to everyone</p>
-                <p>OK wale is under Oye Kidhar Pvt Ltd</p>
-                <p style="padding-top:50px">Design and developed with love by <a href="https://web-it-services.com/" target="_blank">Web IT Services</a></p>
-			</div>
-		</form>
+<div class="container">
+	<div class="header"><img src="ok.png"></div>
+	<div class="header-text">This form allows us to initiate the event you wish to report</div>
+	<div class="input">
+		<input type="text" class="form-control" placeholder="Your Name">
+		<input type="text" class="form-control" placeholder="Your Number">
 	</div>
+	<div class="">
+	By requesting & using an OTP, you hereby agree to terms of use of the <b>Emergency Contact Service Platform</b>
+	</div>
+	<div class="input otp">
+		<input type="text" class="form-control" placeholder="OTP">
+	</div>
+	<div>Once your number is validated, we will call you and then patch you on a conference call with the emergency contact for the QR code scanned</div>
+	<div class="note">Please note, all the calls are recorded </div>
+	<div class="sticky-footer">
+		<div class="term-privacy">Terms | Privacy</div>
+		<hr>
+	</div>
+	<!-- Design and Developed By WEB IT SERVICES (www.web-it-services.com) -->
 </div>
 </body>
 </html>
@@ -52,153 +42,63 @@ session_start();
 body{
 	margin:0;
 	color:#6a6f8c;
-	background:#c8c8c8;
+	background:#fff;
 	font:600 16px/18px 'Open Sans',sans-serif;
 }
-*,:after,:before{box-sizing:border-box}
-.clearfix:after,.clearfix:before{content:'';display:table}
-.clearfix:after{clear:both;display:block}
-a{color:inherit;text-decoration:none}
-
-.login-wrap{
-	width:100%;
-	margin:auto;
-	max-width:525px;
-	min-height:670px;
-	position:relative;
-	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
-	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+.container{
+	padding:58px;
 }
-.login-html{
-	width:100%;
-	height:100%;
-	position:absolute;
-	padding:90px 70px 50px 70px;
-	background:rgba(40,57,101,.9);
+.header{
+	padding-top : 23px;
 }
-.login-html .sign-in-htm,
-.login-html .sign-up-htm{
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	position:absolute;
-	transform:rotateY(180deg);
-	backface-visibility:hidden;
-	transition:all .4s linear;
+.header-text{
+	padding-top : 14px
 }
-.login-html .sign-in,
-.login-html .sign-up,
-.login-form .group .check{
-	display:none;
+.input{
+	padding: 20px 0;
 }
-.login-html .tab,
-.login-form .group .label,
-.login-form .group .button{
-	text-transform:uppercase;
-}
-.login-html .tab{
-	font-size:22px;
-	margin-right:15px;
-	padding-bottom:5px;
-	margin:0 15px 10px 0;
-	display:inline-block;
-	border-bottom:2px solid transparent;
-}
-.login-html .sign-in:checked + .tab,
-.login-html .sign-up:checked + .tab{
+input[type=text] {
 	color:#fff;
-	border-color:#1161ee;
-}
-.login-form{
-	min-height:345px;
-	position:relative;
-	perspective:1000px;
-	transform-style:preserve-3d;
-}
-.login-form .group{
-	margin-bottom:15px;
-}
-.login-form .group .label,
-.login-form .group .input,
-.login-form .group .button{
-	width:100%;
+    width: 80%;
+	height:40px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #2B4469;
+    box-sizing: border-box;
+  }
+  .otp input[type=text]{
 	color:#fff;
-	display:block;
-}
-.login-form .group .input,
-.login-form .group .button{
-	border:none;
-	padding:15px 20px;
-	border-radius:25px;
-	background:rgba(255,255,255,.1);
-}
-.login-form .group input[data-type="password"]{
-	text-security:circle;
-	-webkit-text-security:circle;
-}
-.login-form .group .label{
-	color:#aaa;
-	font-size:12px;
-}
-.login-form .group .button{
-	background:#1161ee;
-}
-.login-form .group label .icon{
-	width:15px;
-	height:15px;
-	border-radius:2px;
-	position:relative;
-	display:inline-block;
-	background:rgba(255,255,255,.1);
-}
-.login-form .group label .icon:before,
-.login-form .group label .icon:after{
-	content:'';
-	width:10px;
-	height:2px;
-	background:#fff;
-	position:absolute;
-	transition:all .2s ease-in-out 0s;
-}
-.login-form .group label .icon:before{
-	left:3px;
-	width:5px;
-	bottom:6px;
-	transform:scale(0) rotate(0);
-}
-.login-form .group label .icon:after{
-	top:6px;
-	right:0;
-	transform:scale(0) rotate(0);
-}
-.login-form .group .check:checked + label{
-	color:#fff;
-}
-.login-form .group .check:checked + label .icon{
-	background:#1161ee;
-}
-.login-form .group .check:checked + label .icon:before{
-	transform:scale(1) rotate(45deg);
-}
-.login-form .group .check:checked + label .icon:after{
-	transform:scale(1) rotate(-45deg);
-}
-.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
-	transform:rotate(0);
-}
-.login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
-	transform:rotate(0);
-}
-
-.hr{
-	height:2px;
-	margin:60px 0 50px 0;
-	background:rgba(255,255,255,.2);
-}
-.foot-lnk{
-	text-align:center;
-}
+    width: 55%;
+	height:40px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    font-size: 14px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #2B4469;
+    box-sizing: border-box;
+  }
+  .note{
+	  padding: 15px 0;
+	  color:#F52525;
+  }
+  .sticky-footer{
+	  max-height:100px;
+	  position: fixed;
+	  bottom: 15px;
+  }
+  .term-privacy{
+	  padding-bottom:-2px;
+  }
+  hr{
+	border: 4px solid green;
+	opacity: 1;
+  }
 </style>
 <script>
 	var ses = null;
