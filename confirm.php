@@ -11,28 +11,28 @@ session_start();
 <meta content="Web IT services" name="author" />
 <!-- App favicon -->
 <link rel="shortcut icon" href="https://admin.okwale.com/assets/images/ok.jpeg">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<link rel="shortcut icon" href="https://admin.okwale.com/assets/images/ok.jpeg">
 
 </head>
 <body>
-<div class="login-wrap">
-	<div class="login-html">
-		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Call Confirm</label>
-		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">OK Wale</label>
-		<form class="login-form" method="POST">
-			<div class="sign-in-htm">
-                <div class="group">
-					<button type="button" onclick="connected()" class="button" name="add">Connected</button>
-				</div>
-				<div class="group">
-					<button type="submit" class="button" name="add">Dropped</button>
-				</div>
-			</div>
-			<div class="sign-up-htm">
-				<p>OK wale provide emergency help to everyone</p>
-                <p>OK wale is under Oye Kidhar Pvt Ltd</p>
-                <p style="padding-top:50px">Design and developed with love by <a href="https://web-it-services.com/" target="_blank">Web IT Services</a></p>
-			</div>
+<div class="container">
+	<div class="header"><img src="okwale.png"></div>
+	<div class="header-text">Your event has been successfully reported.</div>
+	<hr align="left">
+	<div class="p1">While we make an attempt to initiate the call immediately, there could be delays due to network congestion or other issues beyond our control</div>
+	<div class="p2">Please stand-by while we connect with you first and then patch you on a call with the emergency contacts</div>
+	<div class="p3">Please give us your feedback</div>
+	<div class="status">
+		<form method="POST">
+			<button onclick="connected()" class="btn btn-primary">Call Completed</button>
+			<button name="add" type="submit" class="btn btn-primary">Call Dropped</button>
 		</form>
+	</div>
+	<div class="sticky-footer">
+		<div class="term-privacy">Terms | Privacy</div>
+		<hr>
 	</div>
 </div>
 </body>
@@ -41,152 +41,47 @@ session_start();
 body{
 	margin:0;
 	color:#6a6f8c;
-	background:#c8c8c8;
+	background:#fff;
 	font:600 16px/18px 'Open Sans',sans-serif;
 }
-*,:after,:before{box-sizing:border-box}
-.clearfix:after,.clearfix:before{content:'';display:table}
-.clearfix:after{clear:both;display:block}
-a{color:inherit;text-decoration:none}
-
-.login-wrap{
-	width:100%;
-	margin:auto;
-	max-width:525px;
-	min-height:670px;
-	position:relative;
-	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
-	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+.container{
+	padding:58px;
 }
-.login-html{
-	width:100%;
-	height:100%;
-	position:absolute;
-	padding:90px 70px 50px 70px;
-	background:rgba(40,57,101,.9);
+.header{
+	padding-top: 39px;
 }
-.login-html .sign-in-htm,
-.login-html .sign-up-htm{
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	position:absolute;
-	transform:rotateY(180deg);
-	backface-visibility:hidden;
-	transition:all .4s linear;
+.header-text{
+	padding-top:60px;
+	width:60%
 }
-.login-html .sign-in,
-.login-html .sign-up,
-.login-form .group .check{
-	display:none;
+hr{
+	width:100px;
+	border: 4px solid green;
+	opacity: 1;
 }
-.login-html .tab,
-.login-form .group .label,
-.login-form .group .button{
-	text-transform:uppercase;
+.p1{
+	padding-top:29px
 }
-.login-html .tab{
-	font-size:22px;
-	margin-right:15px;
-	padding-bottom:5px;
-	margin:0 15px 10px 0;
-	display:inline-block;
-	border-bottom:2px solid transparent;
+.p2{
+	padding-top:13px
 }
-.login-html .sign-in:checked + .tab,
-.login-html .sign-up:checked + .tab{
-	color:#fff;
-	border-color:#1161ee;
+.p3{
+	padding-top:20px
 }
-.login-form{
-	min-height:345px;
-	position:relative;
-	perspective:1000px;
-	transform-style:preserve-3d;
+.status{
+	position: relative;
+	padding-top:13px
 }
-.login-form .group{
-	margin-bottom:15px;
+.sticky-footer{
+	max-height:100px;
+	position: fixed;
+	bottom: 15px;
 }
-.login-form .group .label,
-.login-form .group .input,
-.login-form .group .button{
-	width:100%;
-	color:#fff;
-	display:block;
+.term-privacy{
+	padding-bottom:-2px;
 }
-.login-form .group .input,
-.login-form .group .button{
-	border:none;
-	padding:15px 20px;
-	border-radius:25px;
-	background:rgba(255,255,255,.1);
-}
-.login-form .group input[data-type="password"]{
-	text-security:circle;
-	-webkit-text-security:circle;
-}
-.login-form .group .label{
-	color:#aaa;
-	font-size:12px;
-}
-.login-form .group .button{
-	background:#1161ee;
-}
-.login-form .group label .icon{
-	width:15px;
-	height:15px;
-	border-radius:2px;
-	position:relative;
-	display:inline-block;
-	background:rgba(255,255,255,.1);
-}
-.login-form .group label .icon:before,
-.login-form .group label .icon:after{
-	content:'';
-	width:10px;
-	height:2px;
-	background:#fff;
-	position:absolute;
-	transition:all .2s ease-in-out 0s;
-}
-.login-form .group label .icon:before{
-	left:3px;
-	width:5px;
-	bottom:6px;
-	transform:scale(0) rotate(0);
-}
-.login-form .group label .icon:after{
-	top:6px;
-	right:0;
-	transform:scale(0) rotate(0);
-}
-.login-form .group .check:checked + label{
-	color:#fff;
-}
-.login-form .group .check:checked + label .icon{
-	background:#1161ee;
-}
-.login-form .group .check:checked + label .icon:before{
-	transform:scale(1) rotate(45deg);
-}
-.login-form .group .check:checked + label .icon:after{
-	transform:scale(1) rotate(-45deg);
-}
-.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
-	transform:rotate(0);
-}
-.login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
-	transform:rotate(0);
-}
-
-.hr{
-	height:2px;
-	margin:60px 0 50px 0;
-	background:rgba(255,255,255,.2);
-}
-.foot-lnk{
-	text-align:center;
+.btn-primary{
+	background: #2B4469;
 }
 </style>
 <script>

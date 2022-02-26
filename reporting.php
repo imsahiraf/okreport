@@ -18,16 +18,19 @@ session_start();
 <div class="container">
 	<div class="header"><img src="ok.png"></div>
 	<div class="header-text">This form allows us to initiate the event you wish to report</div>
+	<form method="POST">
 	<div class="input">
-		<input type="text" class="form-control" placeholder="Your Name">
-		<input type="text" class="form-control" placeholder="Your Number">
+		<input type="text" name="name" class="form-control" id="name" placeholder="Your Name">
+		<span id="namespan" style="color:red"></span>
+		<input type="text" name="number" class="form-control" id="number" onkeyup="sendOTP()" placeholder="Your Number">
 	</div>
 	<div class="">
 	By requesting & using an OTP, you hereby agree to terms of use of the <b>Emergency Contact Service Platform</b>
 	</div>
-	<div class="input otp">
-		<input type="text" class="form-control" placeholder="OTP">
+	<div id="numberVerify" class="input otp">
+		<input type="text" id="otp" onkeyup="checkOTP()" class="form-control" placeholder="OTP">
 	</div>
+	</form>
 	<div>Once your number is validated, we will call you and then patch you on a conference call with the emergency contact for the QR code scanned</div>
 	<div class="note">Please note, all the calls are recorded </div>
 	<div class="sticky-footer">
@@ -104,48 +107,61 @@ input[type=text] {
 	var ses = null;
 	function sendOTP() {
 		var number = document.getElementById('number').value;
-		var url = "https://2factor.in/API/V1/fda7bc0b-20f9-11e7-929b-00163ef91450/SMS/+91" + number + "/AUTOGEN/otp_new";
+		var name = document.getElementById('name').value;
+		console.log(name.length)
+		if(name.length == 0){
+			document.getElementById('namespan').innerHTML = 'Enter Your Name First Please.';
+		}else{
+			document.getElementById('namespan').style.display = "none";
+			if(number.length == 10){
+			var url = "https://2factor.in/API/V1/fda7bc0b-20f9-11e7-929b-00163ef91450/SMS/+91" + number + "/AUTOGEN/otp_new";
 
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", url);
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", url);
 
-		xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
 
-		xhr.onreadystatechange = function () {
-		if (xhr.readyState === 4) {
-			console.log(xhr.status);
-			// console.log((xhr.responseText));
-			result = JSON.parse(xhr.responseText);
-			
-			ses = result.Details;
+			xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				console.log(xhr.status);
+				// console.log((xhr.responseText));
+				result = JSON.parse(xhr.responseText);
+				
+				ses = result.Details;
 
-		}};
+			}};
 
-		xhr.send();
-
+			xhr.send();
+		}
+		}
+		console.log(number.length)
+		
 	}
 	
 	function checkOTP() {
 		console.log(ses)
 		var otp = document.getElementById('otp').value;
-		var url = "https://2factor.in/API/V1/fda7bc0b-20f9-11e7-929b-00163ef91450/SMS/VERIFY/" + ses + "/" + otp;
+		console.log(otp.length)
+		if(otp.length == 6){
+			var url = "https://2factor.in/API/V1/fda7bc0b-20f9-11e7-929b-00163ef91450/SMS/VERIFY/" + ses + "/" + otp;
 
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", url);
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", url);
 
-		xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
 
-		xhr.onreadystatechange = function () {
-		if (xhr.readyState === 4) {
-			console.log(xhr.status);
-			console.log((xhr.responseText));
-			if(xhr.status == 200){
-				document.getElementById('numberVerify').innerHTML = "OTP Verified";
-				document.getElementById("verified").style.display = "none"; 
-			}
-		}};
+			xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				console.log(xhr.status);
+				console.log((xhr.responseText));
+				if(xhr.status == 200){
+					alert("OTP Verified")
+					document.getElementById('numberVerify').innerHTML = '<button type="submit" name="add" class="btn btn-primary">Connect</button>';
+				}
+			}};
 
-		xhr.send();
+			xhr.send();
+		}
 	}
 </script>
 <?php 
