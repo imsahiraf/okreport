@@ -30,9 +30,11 @@ session_start();
 			<button name="add" type="submit" class="btn btn-primary">Call Dropped</button>
 		</form>
 	</div>
-	<div class="sticky-footer">
-		<div class="term-privacy">Terms | Privacy</div>
-		<hr>
+	<div class="sticky-position">
+		<div class="sticky-footer">
+			<div class="term-privacy">Terms | Privacy</div>
+			<hr>
+		</div>
 	</div>
 </div>
 </body>
@@ -74,14 +76,18 @@ hr{
 }
 .sticky-footer{
 	max-height:100px;
-	position: fixed;
-	bottom: 15px;
+	position: absolute;
+	margin-top: 30px;
+	/* bottom: 15px; */
 }
 .term-privacy{
 	padding-bottom:-2px;
 }
 .btn-primary{
 	background: #2B4469;
+}
+.sticky-position{
+	position: relative;
 }
 </style>
 <script>

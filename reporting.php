@@ -33,9 +33,11 @@ session_start();
 	</form>
 	<div>Once your number is validated, we will call you and then patch you on a conference call with the emergency contact for the QR code scanned</div>
 	<div class="note">Please note, all the calls are recorded </div>
-	<div class="sticky-footer">
-		<div class="term-privacy">Terms | Privacy</div>
-		<hr>
+	<div class="sticky-position">
+		<div class="sticky-footer">
+			<div class="term-privacy">Terms | Privacy</div>
+			<hr>
+		</div>
 	</div>
 	<!-- Design and Developed By WEB IT SERVICES (www.web-it-services.com) -->
 </div>
@@ -92,8 +94,9 @@ input[type=text] {
   }
   .sticky-footer{
 	  max-height:100px;
-	  position: fixed;
-	  bottom: 15px;
+	  position: absolute;
+	  margin-top: 30px;
+	  /* bottom: 15px; */
   }
   .term-privacy{
 	  padding-bottom:-2px;
@@ -102,6 +105,9 @@ input[type=text] {
 	border: 4px solid green;
 	opacity: 1;
   }
+  .sticky-position{
+	position: relative;
+   }
 </style>
 <script>
 	var ses = null;
